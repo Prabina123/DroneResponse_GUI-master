@@ -1,0 +1,18 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/DroneResponse
+    docker:
+      - image: cimg/node:16.3.0
+    steps:
+      - checkout
+      - restore_cache:
+          key: DroneResponse-{{ .Branch }}-{{ checksum "package.json" }}
+      - run: npm install
+      - save_cache:
+          key: DroneResponse-{{ .Branch }}-{{ checksum "package.json" }}
+          paths:
+            - "node_modules"
+      - run: npm run build --prod
+      # - run: xvfb-run -a npm run test -- --single-run --no-progress --browser=ChromeNoSandbox
+      # - run: xvfb-run -a npm run e2e -- --no-progress --config=protractor-ci.conf.js

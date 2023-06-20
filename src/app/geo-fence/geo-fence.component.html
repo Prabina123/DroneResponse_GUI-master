@@ -1,0 +1,24 @@
+<div class="row no-gutters">
+  <div class="col-sm-9 no-float">
+    <div id="map" class="map">
+      <div class="submit-geofence">
+        <button type="submit" class="btn btn-info geo-button" (click)="submitGeoFence()" [disabled]="!polygon">
+          Submit GeoFence
+        </button>
+        <button type="submit" class="btn btn-danger geo-button" (click)="goToConnections()">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-3 no-float">
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <app-dropdown-menu></app-dropdown-menu>
+      </div>
+      <div class="sidebar-body">
+        Selected Drone
+      </div>
+    </div>
+  </div>
+</div>

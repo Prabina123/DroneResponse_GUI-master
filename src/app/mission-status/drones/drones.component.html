@@ -1,0 +1,4 @@
+<div *ngFor="let drone of droneList">
+  <a class="center" id="{{drone}}" style="position: absolute; z-index: 10"
+    [ngStyle]="{'left.pt': getLeft(drone), 'top.pt': getTop(drone)}"></a>
+</div>

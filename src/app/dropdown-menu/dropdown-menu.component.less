@@ -1,0 +1,46 @@
+@sidebar-heading-background: #454545;
+
+.menu-button {
+  position: relative;
+  float: right;
+}
+
+.menu-button:focus {
+  outline: none;
+}
+
+.config-menu {
+  display: flex;
+  flex-direction: column;
+  font-weight: normal;
+  z-index: 12;
+  position: fixed;
+  width: 25%;
+  background-color: @sidebar-heading-background;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.menu-option {
+  padding: 1vh 0;
+  border-top: 1px solid #fff;
+  font-size: 0.8rem;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+}
+
+.menu-option.active {
+  color: @sidebar-heading-background;
+  background-color: #fff;
+}
+
+.disabled {
+  padding: 1vh 0;
+  border-top: 1px solid #fff;
+  font-size: 2vh;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+  background-color: #b7b7b7
+}

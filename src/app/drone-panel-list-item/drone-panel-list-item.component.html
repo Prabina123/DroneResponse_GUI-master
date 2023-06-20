@@ -1,0 +1,83 @@
+<div class="list-group-item drone-item">
+  <div class="d-flex w-100">
+    <div class="drone-data">
+      <!-- <h6 class="mb-0 drone-tag" [style.color]="drone.uavid">
+        <fa-icon [icon]="droneIcon" rotate="45"></fa-icon>
+        {{drone.uavid}}
+      </h6> -->
+      <!--.....................-->
+      <h6
+        class="mb-0 drone-tag"
+        [style.color]="drone.uavid"
+        [dndDraggable]="drone"
+        [dndEffectAllowed]="draggable.effectAllowed"
+        (dndStart)="onDragStart($event)"
+        (dndEnd)="onDragEnd($event)"
+      >
+        <fa-icon
+          [icon]="droneIcon"
+          dndDragImageRef
+          rotate="45"
+          *ngIf="draggable.handle"
+          dndHandle
+        ></fa-icon>
+        {{ drone.uavid }}
+      </h6>
+      <!--.....................-->
+      <span>
+        <div class="text-m">
+          <span class="mb-1">{{ drone.status.status }}</span>
+        </div>
+        <div class="text-sm drone-attr">
+          <span class="label">State:</span>
+          <span>{{ drone.status.onboard_pilot2 }}</span>
+        </div>
+        <div class="text-sm drone-attr">
+          <span class="label">Mode:</span>
+          <span>{{ drone.status.mode }}</span>
+        </div>
+        <div class="text-sm drone-attr">
+          <span class="label">Lat:</span>
+          <span>{{ drone.status.location.latitude | number: '2.7' }}</span>
+        </div>
+        <div class="text-sm drone-attr">
+          <span class="label">Long:</span>
+          <span>{{ drone.status.location.longitude | number: '2.7' }}</span>
+        </div>
+        <!-- <div class="text-sm drone-attr">
+          <span class="label icon-label"><fa-icon [icon]="speedIcon"></fa-icon></span>
+          <span>{{drone.status.airspeed | number: '1.2-2'}}mph</span>
+        </div> -->
+        <!-- <div class="text-sm drone-attr">
+          <span class="label icon-label"><fa-icon [icon]="altitudeIcon"></fa-icon></span>
+          <span>{{drone.status.location.altitude + 0 | number: '1.2-2'}}m</span>
+        </div> -->
+        <span class="label icon-label"
+            ><fa-icon [icon]="altitudeIcon"></fa-icon
+          ></span>
+          <span
+            >{{ drone.status.location.altitude + 0 | number : "1.2-2" }}m</span
+          >
+        <!-- <div class="text-sm drone-attr">
+          <span class="label icon-label"><fa-icon [icon]="batteryIcon" [class]="batteryStyleClasses"></fa-icon></span>
+          <span>{{drone.status.battery.level * 100 | number: '1.0'}}%</span>
+        </div> -->
+        <span class="label icon-label"
+            ><fa-icon
+              [icon]="batteryIcon"
+              [class]="batteryStyleClasses"
+            ></fa-icon
+          ></span>
+          <span>{{ drone.status.battery.level * 100 | number : "1.0" }}%</span>
+      </span>
+    </div>
+    <div class="video-data">
+      <!-- <app-video-stream [index]="index" [classProp]="'thumb'" [uavid]="drone.uavid"></app-video-stream> -->
+      <app-video-stream
+        [index]="index"
+        [classProp]="'thumb'"
+        [uavid]="drone.uavid"
+      ></app-video-stream>
+    </div>
+  </div>
+</div>

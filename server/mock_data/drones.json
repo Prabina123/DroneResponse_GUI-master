@@ -1,0 +1,118 @@
+{
+  "drones": [
+    {
+      "uavid": "orange",
+      "color": "orange",
+      "ip": "14550",
+      "status": {
+        "status": "Standby",
+        "mode": "UNKNOWN",
+        "onboard_pilot": "ReceiveMission",
+        "onboard_pilot2": "ReceiveMission",
+        "airspeed": 5,
+        "location": {
+          "altitude": 10,
+          "latitude": 41.6065406,
+          "longitude": -86.3560719
+        },
+        "armed": true,
+        "battery": {
+          "voltage": 10,
+          "current": 5,
+          "level": 0.9
+        },
+        "geofence": true,
+        "heartbeat_status": "continue",
+        "gimbal_attitude": {
+          "x": 2.2513,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.9871
+        },
+        "drone_attitude": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "drone_heading": 0
+      }
+    },
+    {
+      "uavid": "purple",
+      "color": "purple",
+      "ip": "14550",
+      "status": {
+        "status": "Standby",
+        "mode": "UNKNOWN",
+        "onboard_pilot": "ReceiveMission",
+        "onboard_pilot2": "ReceiveMission",
+        "airspeed": 5,
+        "location": {
+          "altitude": 10,
+          "latitude": 41.6065406,
+          "longitude": -86.3562719
+        },
+        "armed": true,
+        "battery": {
+          "voltage": 10,
+          "current": 5,
+          "level": 0.9
+        },
+        "geofence": true,
+        "heartbeat_status": "continue",
+        "gimbal_attitude": {
+          "x": 2.2513,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.9871
+        },
+        "drone_attitude": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "drone_heading": 90
+      }
+    },
+    {
+      "uavid": "green",
+      "color": "green",
+      "ip": "14550",
+      "status": {
+        "status": "Standby",
+        "mode": "UNKNOWN",
+        "onboard_pilot": "ReceiveMission",
+        "onboard_pilot2": "ReceiveMission",
+        "airspeed": 5,
+        "location": {
+          "altitude": 10,
+          "latitude": 41.6065406,
+          "longitude": -86.3558619
+        },
+        "armed": true,
+        "battery": {
+          "voltage": 10,
+          "current": 5,
+          "level": 0.9
+        },
+        "geofence": true,
+        "heartbeat_status": "continue",
+        "gimbal_attitude": {
+          "x": 2.2513,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.9871
+        },
+        "drone_attitude": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "drone_heading": 315 
+      }
+    }
+  ]
+}

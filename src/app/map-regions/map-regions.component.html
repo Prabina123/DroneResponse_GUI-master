@@ -1,0 +1,151 @@
+<div class="regions-section mt-2">
+  <div class="top-button-group">
+    <button
+      mat-flat-button
+      color="primary"
+      (click)="drawRegion()"
+      [disabled]="isCreatingRegion || isEditingRegion"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+    <button
+      mat-flat-button
+      color="primary"
+      [disabled]="isCreatingRegion || !selectedRegionObject || isEditingRegion"
+      (click)="handleEditRegion()"
+    >
+      <mat-icon>edit_square</mat-icon>
+    </button>
+    <button
+      mat-flat-button
+      color="primary"
+      [matMenuTriggerFor]="menu"
+      [disabled]="isCreatingRegion || !selectedRegionObject || isEditingRegion"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <div class="deleteDialog">
+        <h4>
+          Are you sure you want to delete
+          {{ selectedRegionObject?.name }} region?
+        </h4>
+        <div class="d-flex mt-4">
+          <button
+            mat-stroked-button
+            color="warn"
+            (click)="handleDeleteRegion()"
+          >
+            Yes
+          </button>
+          <button mat-stroked-button style="margin-left: 5px">No</button>
+        </div>
+      </div>
+    </mat-menu>
+    <button
+      mat-flat-button
+      color="primary"
+      (click)="saveRegion()"
+      [disabled]="!isCreatingRegion && !isEditingRegion"
+    >
+      <mat-icon>save</mat-icon>
+    </button>
+    <button
+      mat-flat-button
+      color="primary"
+      (click)="cancelAction()"
+    >
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </div>
+
+  <div *ngIf="isCreatingRegion || isEditingRegion">
+    <input
+      matInput
+      placeholder="Region Name"
+      class="input-box"
+      [(ngModel)]="regionName"
+    />
+    <div class="row">
+      <mat-form-field class="region-form">
+        <mat-label>Altitude</mat-label>
+        <input
+          matInput
+          placeholder="Altitude"
+          type="number"
+          min=0
+          [(ngModel)]="regionAltitude"
+        />
+      </mat-form-field>
+      <mat-form-field class="region-form">
+        <mat-label>Speed</mat-label>
+        <input
+          matInput
+          placeholder="Speed"
+          type="number"
+          min=0
+          [(ngModel)]="regionSpeed"
+        />
+      </mat-form-field>
+    </div>
+  </div>
+  <small
+    class="text-danger"
+    *ngIf="(isCreatingRegion || isEditingRegion) && regionNameError"
+  >
+    {{ regionNameError }}
+  </small>
+
+  <div class="search-regions" *ngIf="!isCreatingNewRegion && ! isEditingRegion">
+    <input
+      matInput
+      placeholder="Search regions"
+      class="input-box"
+      [(ngModel)]="searchTerm"
+      (input)="searchRegions()"
+    />
+  </div>
+</div>
+
+<div class="accordion mt-4" id="regionAccordion">
+  <div
+    *ngFor="let region of displayedRegions; let idx = index"
+    (click)="handleRegionSelect(region)"
+    class="region card"
+    [attr.id]="'card' + idx"
+  >
+    <div
+      class="card-header"
+      [attr.id]="'heading' + idx"
+      data-toggle="collapse"
+      [attr.data-target]="'#collapse' + idx"
+      aria-expanded="true"
+      [class.opened]="region._id == selectedRegionObject?._id"
+      aria-controls="collapseOne"
+    >
+      <div class="visible-route-data">
+        <div class="route-name">
+          <b>{{ region.name }}</b>
+        </div>
+      </div>
+    </div>
+    <div
+      [attr.id]="'collapse' + idx"
+      class="collapse"
+      [attr.aria-labelledby]="'heading' + idx"
+      data-parent="#regionAccordion"
+    >
+      <div class="card-body">
+        <div class="region-data">
+          <div class="left-data">
+            <p>Created: {{ getDate(region.created) }}</p>
+          </div>
+          <div class="right-data">
+            <p>Altitude: {{ region.altitude }}m</p>
+            <p>Speed: {{ region.speed }}m/s</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,5 @@
+<div #stream (click)="playVideo()" [className]="classProp">
+  <video #videoPlayer muted [className]="classProp">
+    <source src="{{ videoSource }}" type="video/mp4">
+  </video>
+</div>

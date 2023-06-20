@@ -1,0 +1,67 @@
+<div class="row no-gutters">
+  <div class="col-sm-9 no-float drone-col">
+    <div id="view-drone-feeds" class="vh-100">
+      <div class="card rounded-0">
+        <div class="card-header">
+          <ul class="nav nav-tabs card-header-tabs text-center" id="drone-tabs" role="tablist">
+            <li
+              *ngFor="let drone of data; let i = index"
+              class="nav-item"
+              [ngClass]="{'d-none': !droneService.getTabVisibility(i)}"
+              id="{{ 'drone-' + i + '-tab' }}"
+            >
+              <div class="nav-link"
+                [style.color]="drone.uavid" 
+                [style.background]="droneService.getActiveTab() === i ? drone.uavid : '#e5e5e5'" 
+                [ngClass]="{'active': droneService.getActiveTab() === i}"
+                href="#"
+                (click)="makeActive(i)"
+              >
+                UAV-{{drone.uavid}}
+                <br>
+                <span class="badge badge-light bg-light badge-pill border mt-1">
+                  {{ drone.status.status | slice: 0:1 }}
+                </span>
+              </div>
+            </li>
+          </ul>
+          <button
+            id="back-to-map"
+            class="btn btn-link btn-lg" 
+            type="button"
+            routerLink="/"
+          >
+            <fa-icon [icon]="arrowsIcon"></fa-icon>
+          </button>
+        </div>
+      </div>
+
+      <div id="drone-feeds" class="tab-content">
+        <div
+          *ngFor="let drone of data; let i = index"
+          id="{{ 'drone-' + i + '-feed' }}"
+          class="tab-pane fade"
+          [style.borderColor]="drone.uavid"
+          [ngClass]="{'active show': droneService.getActiveTab() === i}"
+        >
+          <app-video-stream [id]="drone.uavid" [classProp]="'full'"></app-video-stream>
+          <button 
+            class="close-tab btn btn-light btn-lg rounded-pill" 
+            (click)="closeTab(i)"
+          >
+            <span 
+              class="font-weight-bold pr-2"
+              [style.color]="drone.uavid"
+            >
+              UAV-{{drone.uavid}}
+            </span>
+            <fa-icon [icon]="xIcon"></fa-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-3 no-float drone-col">
+    <app-drone-panel></app-drone-panel>
+  </div>
+</div>

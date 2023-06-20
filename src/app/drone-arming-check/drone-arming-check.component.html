@@ -1,0 +1,26 @@
+<div class="sidebar">
+  <div class="sidebar-header">
+    <app-dropdown-menu currentLocation="Drone Connections"></app-dropdown-menu>
+  </div>
+  <div class="sidebar-body">
+    <div class="header-bar" [style.background-color]="drone.uavid">
+    </div>
+    <div class="drone-header-info">
+      <span>UAV-{{ drone.uavid }}</span><br>
+      <span>Color: {{ drone.uavid }}</span><br>
+      <!-- <span>Port: {{ drone.ip.substr(drone.ip.length - 5) }}</span> -->
+    </div>
+    <hr>
+    <ul class="drone-arming-info">
+      <li
+        *ngFor="let data of reversed(status)"
+        class="arming-check"
+        [ngClass]="{ 'arming-check-success': data.type == 'success',
+                    'arming-check-warning': data.type == 'warning',
+                    'arming-check-error': data.type == 'error' }"
+      >
+        {{ data.message }}
+      </li>
+    </ul>
+  </div>
+</div>

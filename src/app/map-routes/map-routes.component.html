@@ -1,0 +1,132 @@
+<div class="routes-section mt-2">
+  <div class="top-button-group">
+    <button
+      mat-flat-button
+      color="primary"
+      [disabled]="isCreatingNewRoute || isEditingRoute"
+      (click)="drawRouteHandler()"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+    <button
+      mat-flat-button
+      color="primary"
+      [disabled]="isCreatingNewRoute || !selectedRouteObject || isEditingRoute"
+      (click)="handleEditRoute()"
+    >
+      <mat-icon>edit_square</mat-icon>
+    </button>
+    <button
+      mat-flat-button
+      color="primary"
+      [matMenuTriggerFor]="menu"
+      [disabled]="isCreatingNewRoute || !selectedRouteObject || isEditingRoute"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <div class="deleteDialog">
+        <h4>
+          Are you sure you want to delete
+          {{ selectedRouteObject?.routeName }} route?
+        </h4>
+        <div class="d-flex mt-4">
+          <button
+            mat-stroked-button
+            color="warn"
+            (click)="handleDeleteRoute()"
+          >
+            Yes
+          </button>
+          <button mat-stroked-button style="margin-left: 5px">No</button>
+        </div>
+      </div>
+    </mat-menu>
+    <button
+      mat-flat-button
+      color="primary"
+      (click)="saveRoute()"
+      [disabled]="!isCreatingNewRoute && !isEditingRoute"
+    >
+      <mat-icon>save</mat-icon>
+    </button>
+    <button
+      mat-flat-button
+      color="primary"
+      (click)="cancelAction()"
+    >
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </div>
+
+  <div *ngIf="isCreatingNewRoute">
+    <input
+      matInput
+      placeholder="Route Name"
+      class="input-box"
+      [(ngModel)]="routeName"
+      (change)="checkRouteName()"
+    />
+  </div>
+  <small class="text-danger" *ngIf="isCreatingNewRoute && routeNameError">
+    {{ routeNameError }}
+  </small>
+
+  <div class="search-routes" *ngIf="!isCreatingNewRoute">
+    <input
+      matInput
+      placeholder="Search routes"
+      class="input-box"
+      [(ngModel)]="searchTerm"
+      (input)="searchRoutes()"
+    />
+  </div>
+</div>
+
+<div class="accordion mt-4" id="routeAccordion">
+  <div
+    *ngFor="let route of displayedRoutes; let idx = index"
+    (click)="handleRouteSelect(route)"
+    class="route card"
+    [attr.id]="'card' + idx"
+  >
+    <div
+      class="card-header"
+      [attr.id]="'heading' + idx"
+      data-toggle="collapse"
+      [attr.data-target]="'#collapse' + idx"
+      aria-expanded="true"
+      [class.opened]="route.sourceID === selectedRouteObject?.sourceID"
+      aria-controls="collapseOne"
+    >
+      <div class="visible-route-data">
+        <div class="route-name">
+          <b>{{ route.routeName }}</b>
+        </div>
+      </div>
+    </div>
+    <div
+      [attr.id]="'collapse' + idx"
+      class="collapse"
+      [attr.aria-labelledby]="'heading' + idx"
+      data-parent="#routeAccordion"
+    >
+      <div class="card-body">
+        <div class="route-data">
+          <div class="left-data">
+            <p>Author: {{ route.author }}</p>
+            <p>Created: {{ getDate(route.created) }}</p>
+            <p>Distance: {{ route.distance }}m</p>
+            <p>Waypoints: {{ route.pointData.length }}</p>
+          </div>
+          <div class="right-data">
+            <p>Min Altitude: {{ route.minimum.altitude }}m</p>
+            <p>Max Altitude: {{ route.maximum.altitude }}m</p>
+            <p>Min Speed: {{ route.minimum.speed }}m/s</p>
+            <p>Max Speed: {{ route.maximum.speed }}m/s</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

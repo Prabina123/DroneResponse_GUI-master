@@ -1,0 +1,30 @@
+## Issues/To Dos
+- Airmap layers
+    - Airmap doesn't support the new satellite mapbox layer
+    - If map starts on or is switched to the satellite mapbox layer, the airmap layers will not show
+- Map regions/routes/missions
+    - Allow selection of multiple routes for a drone
+    - Add properties to routes and regions when selecting them for a drone
+        - For example: Searching route/region or flying only route/region
+    - Choose/notify which part of region a drone gets
+        - Currently, drones are given their starting locations on a shared region based on what gives the minimum overall distance to fly between all selected drones
+        - Still need to check for intersections
+            - There is logic for checking intersections that has not yet been fully implemented and tested: https://github.com/DroneResponse/DR-GUI/blob/master/src/app/map-layers/RegionPath.ts#L285
+- Video streaming
+    - Live video from UDP stream with H.264
+        - Likely best option is to use WebRTC using a media server like [Kurento](https://doc-kurento.readthedocs.io/en/latest/) or [OpenVidu](https://openvidu.io/)
+- Drone Connections Page
+    - Page is functional but needs to be updated to include all of the information from the [Drone](https://github.com/DroneResponse/DR-GUI/blob/master/src/app/model/Drone.ts) model
+- Mission JSONs
+    - Display more missions than just waypoints
+        - Show hovers and circling of targets
+    - Allow selecting of multiple missions in the mission wizard
+        - Currently, the mission wizard only allows for selecting a single saved mission that supports the number of drones selected for that role
+    - Allow for uploading multiple JSON files to be saved as a singular mission
+- Speed not showing up properly from drones
+    - Airspeed is not being updated on onboard pilot
+- Altitude relative to drone's home position
+    - This is currently supported in production mode if an Open Topo Data API is running locally (see [README](https://github.com/DroneResponse/DR-GUI#open-topo-data-altitude-api-installation))
+- MissionStatusComponent
+    - See if this component is still needed and what work needs to be done to get it working if it is wanted
+- When creating missions with hover points, look at the old [MissionMapComponent](https://github.com/DroneResponse/DR-GUI/blob/edf50bd96c12b02c35eb09a62083a67b371f41db/src/app/mission-map/mission-map.component.ts#L135) code

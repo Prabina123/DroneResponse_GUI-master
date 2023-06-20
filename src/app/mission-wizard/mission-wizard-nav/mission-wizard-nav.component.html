@@ -1,0 +1,43 @@
+<ul class="row top-bar c-stepper">
+  <li
+    class="c-stepper__item {{ selectedConfigureColor(!checkAnyConfigure()) }}"
+  >
+    <button mat-shadow-button color="primary" class="no-border">
+      <h4 class="c-stepper__title configure_button">Select Workflow</h4>
+    </button>
+  </li>
+  <li
+    class="c-stepper__item {{ selectedConfigureColor(checkAllCompleted()) }}"
+  >
+    <button
+      mat-shadow-button
+      color="primary"
+      class="no-border"
+      [disabled]="checkAnyConfigure()"
+    >
+      <h4 class="c-stepper__title" mat-shadow-button>Configure</h4>
+    </button>
+  </li>
+  <li
+    class="c-stepper__item {{ selectedConfigureColor(checkAllCompleted()) }}"
+  >
+    <button
+      mat-shadow-button
+      color="primary"
+      class="no-border"
+      [disabled]="!checkAllCompleted()"
+    >
+      <h4 class="c-stepper__title" mat-shadow-button>Review</h4>
+    </button>
+  </li>
+  <li class="c-stepper__item">
+    <button
+      (click)="openMissionSaveDialog()"
+      [disabled]="!checkAllCompleted()"
+      mat-raised-button
+      color="primary"
+    >
+      Create Mission
+    </button>
+  </li>
+</ul>

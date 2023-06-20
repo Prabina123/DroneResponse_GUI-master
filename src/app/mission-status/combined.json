@@ -1,0 +1,525 @@
+{
+	"mission": {
+		"name": "summer demo",
+		"created_by": "jane",
+		"created_date": "06/01/2021"
+	},
+	"mission_roles": [
+		{
+			"role": "search_and_detect",
+			"drone_count": "3",
+			"drone_list": [
+				{
+					"id": "red",
+					"waypoints": [
+						{
+							"latitude": 41.70573086523541,
+							"longitude": -86.24421841999177,
+							"altitude": 20,
+							"velocity": 20
+						},
+						{
+							"latitude": 41.70573086523541,
+							"longitude": -86.24421841999177,
+							"altitude": 20,
+							"velocity": 18
+						}
+					]
+				},
+				{
+					"id": "orange",
+					"waypoints": [
+						{
+							"latitude": 41.70527027430954,
+							"longitude": -86.24371841999177,
+							"altitude": 20,
+							"velocity": 20
+						},
+						{
+							"latitude": 41.70587715186471,
+							"longitude": -86.24371841999177,
+							"altitude": 20,
+							"velocity": 15
+						},
+						{
+							"latitude": 41.706,
+							"longitude": -86.245,
+							"altitude": 30,
+							"velocity": 15
+						},
+						{
+							"latitude": 41.70573086523541,
+							"longitude": -86.24421841999177,
+							"altitude": 20,
+							"velocity": 18
+						}
+					]
+				},
+				{
+					"id": "blue",
+					"waypoints": [
+						{
+							"latitude": 41.70573086523541,
+							"longitude": -86.24421841999177,
+							"altitude": 20,
+							"velocity": 20
+						},
+						{
+							"latitude": 41.70573086523541,
+							"longitude": -86.24421841999177,
+							"altitude": 20,
+							"velocity": 18
+						}
+					]
+				}
+			]
+		},
+		{
+			"role": "birds_eye_surveillance",
+			"drone_count": "1",
+			"drone_list": [
+				{
+					"id": "purple",
+					"hoverpoint": {
+						"latitude": 41.712,
+						"longitude": -86.245,
+						"altitude": 35,
+						"velocity": 20
+					}
+				}
+			]
+		},
+		{
+			"role": "delivery",
+			"drone_count": "1",
+			"drone_list": [
+				{
+					"id": ""
+				}
+			]
+		}
+	],
+	"mission_types": [
+		{
+			"name": "search_and_detect",
+			"states": [
+				{
+					"name": "MissionPreparation",
+					"group": "Takeoff",
+					"transitions": [
+						{
+							"target": "OnGroundAndInactive",
+							"condition": "MissionConfigured"
+						}
+					]
+				},
+				{
+					"name": "OnGroundAndInactive",
+					"group": "Takeoff",
+					"transitions": [
+						{
+							"target": "Preflight",
+							"condition": "PreflightChecksInitiated"
+						}
+					]
+				},
+				{
+					"name": "Preflight",
+					"group": "Takeoff",
+					"transitions": [
+						{
+							"target": "Arming",
+							"condition": "PreflightChecksPassed"
+						},
+						{
+							"target": "OnGroundAndInactive",
+							"condition": "PreflightChecksFailed"
+						}
+					]
+				},
+				{
+					"name": "Arming",
+					"group": "Takeoff",
+					"transitions": [
+						{
+							"target": "TakeOff",
+							"condition": "DroneArmed"
+						},
+						{
+							"target": "OnGroundAndInactive",
+							"condition": "ArmingFailed"
+						}
+					]
+				},
+				{
+					"name": "TakeOff",
+					"group": "Takeoff",
+					"transitions": [
+						{
+							"target": "FlyToDestination",
+							"condition": "AltitudeReached"
+						},
+						{
+							"target": "Land",
+							"condition": "TakeoffFailed"
+						}
+					]
+				},
+				{
+					"name": "FlyToDestination",
+					"group": "Mission",
+					"transitions": [
+						{
+							"target": "Searching",
+							"condition": "DestinationReached"
+						}
+					]
+				},
+				{
+					"name": "Searching",
+					"group": "Mission",
+					"transitions": [
+						{
+							"target": "VictimDetected",
+							"condition": "VictimDetected"
+						},
+						{
+							"target": "UserVictimCheck",
+							"condition": "PossibleVictimDetected"
+						},
+						{
+							"target": "Tracking",
+							"condition": "SelectedToTrack"
+						},
+						{
+							"target": "ReturnHome",
+							"condition": "ReturnHomeCommand"
+						}
+					]
+				},
+				{
+					"name": "VictimDetected",
+					"group": "Mission",
+					"transitions": [
+						{
+							"target": "Searching",
+							"condition": "ContinueSearch"
+						},
+						{
+							"target": "Tracking",
+							"condition": "SelectedToTrack"
+						}
+					]
+				},
+				{
+					"name": "UserVictimCheck",
+					"group": "Mission",
+					"transitions": [
+						{
+							"target": "Searching",
+							"condition": "FalseAlarm"
+						},
+						{
+							"target": "VictimDetected",
+							"condition": "VictimConfirmed"
+						}
+					]
+				},
+				{
+					"name": "Tracking",
+					"group": "Mission",
+					"transitions": [
+						{
+							"target": "ReturnHome",
+							"condition": "ReturnHomeCommand"
+						}
+					]
+				},
+				{
+					"name": "ReturnHome",
+					"group": "End",
+					"transitions": [
+						{
+							"target": "Land",
+							"condition": "HomeReached"
+						}
+					]
+				},
+				{
+					"name": "Land",
+					"group": "End",
+					"transitions": [
+						{
+							"target": "Disarm",
+							"condition": "OnGround"
+						}
+					]
+				},
+				{
+					"name": "Disarm",
+					"group": "End",
+					"transitions": [
+						{
+							"target": "OnGroundAndInactive",
+							"condition": "Disarmed"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "birds_eye_surveillance",
+			"states": [
+				{
+					"name": "MissionPreparation",
+					"group": "Takeoff",
+					"transitions": [
+						{
+							"target": "OnGroundAndInactive",
+							"condition": "MissionConfigured"
+						}
+					]
+				},
+				{
+					"name": "OnGroundAndInactive",
+					"group": "Takeoff",
+					"transitions": [
+						{
+							"target": "Preflight",
+							"condition": "PreflightChecksInitiated"
+						}
+					]
+				},
+				{
+					"name": "Preflight",
+					"group": "Takeoff",
+					"transitions": [
+						{
+							"target": "Arming",
+							"condition": "PreflightChecksPassed"
+						},
+						{
+							"target": "OnGroundAndInactive",
+							"condition": "PreflightChecksFailed"
+						}
+					]
+				},
+				{
+					"name": "Arming",
+					"group": "Takeoff",
+					"transitions": [
+						{
+							"target": "TakeOff",
+							"condition": "DroneArmed"
+						},
+						{
+							"target": "OnGroundAndInactive",
+							"condition": "ArmingFailed"
+						}
+					]
+				},
+				{
+					"name": "TakeOff",
+					"group": "Takeoff",
+					"transitions": [
+						{
+							"target": "FlyToDestination",
+							"condition": "AltitudeReached"
+						},
+						{
+							"target": "Land",
+							"condition": "TakeoffFailed"
+						}
+					]
+				},
+				{
+					"name": "FlyToDestination",
+					"group": "Mission",
+					"transitions": [
+						{
+							"target": "PositionForDrop",
+							"condition": "PositionForDrop"
+						}
+					]
+				},
+				{
+					"name": "PositionForDrop",
+					"group": "Mission",
+					"transitions": [
+						{
+							"target": "Dropping",
+							"condition": "Positioned"
+						}
+					]
+				},
+				{
+					"name": "Dropping",
+					"group": "Mission",
+					"transitions": [
+						{
+							"target": "ReturnHome",
+							"condition": "DropCompleted"
+						}
+					]
+				},
+				{
+					"name": "ReturnHome",
+					"group": "End",
+					"transitions": [
+						{
+							"target": "Land",
+							"condition": "HomeReached"
+						}
+					]
+				},
+				{
+					"name": "Land",
+					"group": "End",
+					"transitions": [
+						{
+							"target": "Disarm",
+							"condition": "OnGround"
+						}
+					]
+				},
+				{
+					"name": "Disarm",
+					"group": "End",
+					"transitions": [
+						{
+							"target": "OnGroundAndInactive",
+							"condition": "Disarmed"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "delivery",
+			"states": [
+				{
+					"name": "MissionPreparation",
+					"group": "Takeoff",
+					"transitions": [
+						{
+							"target": "OnGroundAndInactive",
+							"condition": "MissionConfigured"
+						}
+					]
+				},
+				{
+					"name": "OnGroundAndInactive",
+					"group": "Takeoff",
+					"transitions": [
+						{
+							"target": "Preflight",
+							"condition": "PreflightChecksInitiated"
+						}
+					]
+				},
+				{
+					"name": "Preflight",
+					"group": "Takeoff",
+					"transitions": [
+						{
+							"target": "OnStandby",
+							"condition": "PreflightChecksPassed"
+						},
+						{
+							"target": "OnGroundAndInactive",
+							"condition": "PreflightChecksFailed"
+						}
+					]
+				},
+				{
+					"name": "OnStandby",
+					"group": "Takeoff",
+					"transitions": [
+						{
+							"target": "Arming",
+							"condition": "DeployCommand"
+						}
+					]
+				},
+				{
+					"name": "Arming",
+					"group": "Takeoff",
+					"transitions": [
+						{
+							"target": "TakeOff",
+							"condition": "DroneArmed"
+						},
+						{
+							"target": "OnGroundAndInactive",
+							"condition": "ArmingFailed"
+						}
+					]
+				},
+				{
+					"name": "TakeOff",
+					"group": "Takeoff",
+					"transitions": [
+						{
+							"target": "FlyToDestination",
+							"condition": "AltitudeReached"
+						},
+						{
+							"target": "Land",
+							"condition": "TakeoffFailed"
+						}
+					]
+				},
+				{
+					"name": "FlyToDestination",
+					"group": "Mission",
+					"transitions": [
+						{
+							"target": "BirdsEyeSurveillance",
+							"condition": "DestinationReached"
+						}
+					]
+				},
+				{
+					"name": "BirdsEyeSurveillance",
+					"group": "Mission",
+					"transitions": [
+						{
+							"target": "ReturnHome",
+							"condition": "ReturnHomeCommand"
+						}
+					]
+				},
+				{
+					"name": "ReturnHome",
+					"group": "End",
+					"transitions": [
+						{
+							"target": "Land",
+							"condition": "HomeReached"
+						}
+					]
+				},
+				{
+					"name": "Land",
+					"group": "End",
+					"transitions": [
+						{
+							"target": "Disarm",
+							"condition": "OnGround"
+						}
+					]
+				},
+				{
+					"name": "Disarm",
+					"group": "End",
+					"transitions": [
+						{
+							"target": "OnGroundAndInactive",
+							"condition": "Disarmed"
+						}
+					]
+				}
+			]
+		}
+]
+}

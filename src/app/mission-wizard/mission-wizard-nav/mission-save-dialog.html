@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>Save mission</h1>
+<div mat-dialog-content>
+  <p>Would you like to save this mission for future use?</p>
+  <mat-form-field appearance="fill">
+    <mat-label>Mission Name</mat-label>
+    <input matInput [(ngModel)]="missionName">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-flat-button color="primary" [disabled]="!missionName" [mat-dialog-close]="missionName">Yes</button>
+  <button mat-flat-button color="warn" (click)="closeBox()">No</button>
+</div>

@@ -1,0 +1,132 @@
+{
+	"name": "birds_eye_surveillance",
+	"states": [
+		{
+			"name": "MissionPreparation",
+			"group": "Takeoff",
+			"transitions": [
+				{
+					"target": "OnGroundAndInactive",
+					"condition": "MissionConfigured"
+				}
+			]
+		},
+		{
+			"name": "OnGroundAndInactive",
+			"group": "Takeoff",
+			"transitions": [
+				{
+					"target": "Preflight",
+					"condition": "PreflightChecksInitiated"
+				}
+			]
+		},
+		{
+			"name": "Preflight",
+			"group": "Takeoff",
+			"transitions": [
+				{
+					"target": "Arming",
+					"condition": "PreflightChecksPassed"
+				},
+				{
+					"target": "OnGroundAndInactive",
+					"condition": "PreflightChecksFailed"
+				}
+			]
+		},
+		{
+			"name": "Arming",
+			"group": "Takeoff",
+			"transitions": [
+				{
+					"target": "TakeOff",
+					"condition": "DroneArmed"
+				},
+				{
+					"target": "OnGroundAndInactive",
+					"condition": "ArmingFailed"
+				}
+			]
+		},
+		{
+			"name": "TakeOff",
+			"group": "Takeoff",
+			"transitions": [
+				{
+					"target": "FlyToDestination",
+					"condition": "AltitudeReached"
+				},
+				{
+					"target": "Land",
+					"condition": "TakeoffFailed"
+				}
+			]
+		},
+		{
+			"name": "FlyToDestination",
+			"group": "Mission",
+			"transitions": [
+				{
+					"target": "BirdsEyeSurveillance",
+					"condition": "DestinationReached"
+				}
+			]
+		},
+		{
+			"name": "BirdsEyeSurveillance",
+			"group": "Mission",
+			"transitions": [
+				{
+					"target": "ReturnHome",
+					"condition": "ReturnHomeCommand"
+				}
+			]
+		},
+		{
+			"name": "ReturnHome",
+			"group": "End",
+			"transitions": [
+				{
+					"target": "Land",
+					"condition": "HomeReached"
+				}
+			]
+		},
+		{
+			"name": "Land",
+			"group": "End",
+			"transitions": [
+				{
+					"target": "Disarm",
+					"condition": "OnGround"
+				}
+			]
+		},
+		{
+			"name": "Disarm",
+			"group": "End",
+			"transitions": [
+				{
+					"target": "OnGroundAndInactive",
+					"condition": "Disarmed"
+				}
+			]
+		},
+		{
+			"name": "LandSafe",
+            "group": "FailSafe",
+            "transitions": []
+		},
+		{
+			"name": "ReturnToLaunch",
+            "group": "FailSafe",
+            "transitions": []
+		},
+		{
+			"name": "Hover",
+            "group": "FailSafe",
+            "transitions": []
+		}
+	]
+}

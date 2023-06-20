@@ -1,0 +1,34 @@
+<div class="row no-gutters">
+  <div class="col-sm-9 no-float">
+    <div class="content-area">
+      <div *ngFor="let state of states | keyvalue; index as i">
+        <button *ngIf="state.value['view']" class="btn-invis" (click)="showOptions(state.value.name)"
+          style="position: absolute"
+          [ngStyle]="{'left.pt': getLeft(state.value.name), 'top.pt': getTop(state.value.name)}"></button>
+      </div>
+      <div id="container1" class="container1">
+        <a class="center" id="graph" style="display: inline-block; z-index: -1"></a>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-3 no-float">
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <app-dropdown-menu currentLocation="Create Roles"></app-dropdown-menu>
+      </div>
+      <div class="sidebar-body">
+        <mat-toolbar class="role-toolbar">
+          <button (click)="roleCompletionModal()" mat-raised-button color="primary">Create Role</button>
+        </mat-toolbar>
+        <div class="customizer" *ngIf="show_options" style="display: block;">
+          <h4 class="customizer-header">Select transitions for {{state_selected}}</h4>
+          <div *ngFor="let trans of trans_options; index as i" class="custom-control custom-checkbox checkbox-xl">
+            <input type="checkbox" class="custom-control-input" id="trans-{{i}}" name="checkbox-list"
+              [(ngModel)]="trans.view" (click)="updateView(i); renderGraph()">
+            <label class="custom-control-label" for="trans-{{i}}">{{trans.target}}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

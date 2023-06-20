@@ -1,0 +1,117 @@
+<div class="row no-gutters header-row">
+  <div class="col-sm-9 no-float row-margin">
+    <h2>Virtual Drones</h2>
+  </div>
+  <div class="col-sm-3 no-float">
+    <app-dropdown-menu></app-dropdown-menu>
+  </div>
+</div>
+
+<div class="row no-gutters drone-view">
+  <div class="col-sm-9 row-margin no-float drone-col">
+    <div class="drone-list">
+      <ul class="list-inline drone-list">
+        <li
+          *ngFor="let drone of drones; let i = index"
+          class="list-inline-item drone-list-item border-shadow"
+          id="{{ 'drone-' + i + '-item' }}"
+        >
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-sm-3 no-float drone-col">
+    <div class="form-select border-shadow">
+      <div class="select-header">
+        Simulator:
+      </div>
+      <mat-radio-group class="simulator-group" [(ngModel)]="simulator">
+        <mat-radio-button
+          *ngFor="let sim of simulatorOptions"
+          class="sim-select-button"
+          [value]="sim"
+        >
+          {{sim}}
+        </mat-radio-button>
+      </mat-radio-group>
+    </div>
+
+    <div class="form-select border-shadow">
+      <div class="select-header">
+        Total Number:
+      </div>
+      <div class="number-buttons">
+        <button mat-raised-button (click)="changeDrones(-1)" class="num-button" id="subtract" [disabled]="numDrones === 0">
+          <fa-icon [icon]="minusIcon"></fa-icon>
+        </button>
+        <div class="number-display border-shadow">
+          {{numDrones}}
+        </div>
+        <button mat-raised-button (click)="changeDrones(1)" class="num-button" id="add" [disabled]="numDrones === 8">
+          <fa-icon [icon]="plusIcon"></fa-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="form-select lat-long border-shadow">
+      <label for="latitude">Latitude</label>
+      <input class="lat-long-input" id="latitude" type="text" [(ngModel)]="latitude"/>
+      <hr>
+      <label for="longitude">Longitude</label>
+      <input class="lat-long-input" id="longitude" type="text" [(ngModel)]="longitude"/>
+    </div>
+
+    <div class="form-select options border-shadow">
+      <mat-checkbox
+        class="sim-option"
+        [checked]="scatter"
+        [(ngModel)]="scatter"
+      >
+        Scatter
+      </mat-checkbox>
+      <mat-checkbox
+        class="sim-option"
+        [checked]="speedUp"
+        [(ngModel)]="speedUp"
+      >
+        Speed Up
+      </mat-checkbox>
+    </div>
+
+    <button mat-raised-button class="generate-button">
+      Generate
+    </button>
+
+  </div>
+</div>
+
+<div class="row no-gutters row-margin action-bar border-shadow">
+  <div class="col-sm-6 action-col">
+    <button mat-raised-button class="action-button">
+      Set GeoFence
+    </button>
+    <button mat-raised-button class="action-button">
+      Arm
+    </button>
+    <button mat-raised-button class="action-button">
+      Disarm 
+    </button>
+    <button mat-raised-button class="action-button last-button">
+      Kill 
+    </button>
+  </div>
+  <div class="col-sm-4 action-col">
+    <button mat-raised-button class="action-button" (click)="selectAll()">
+      Select All
+    </button>
+    <button mat-raised-button class="action-button last-button" (click)="clearAll()">
+      Clear All 
+    </button>
+  </div>
+  <div class="col-sm-2 action-col last-col">
+    <button mat-raised-button class="action-button last-button" (click)="showMap()" >
+      Map <fa-icon [icon]="geofenceIcon"></fa-icon>
+    </button>
+  </div>
+</div>

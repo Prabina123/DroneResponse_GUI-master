@@ -1,0 +1,43 @@
+@import "~@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
+
+.wizard-row {
+  width: 100%;
+  display: flex;
+  position: fixed;
+  box-sizing: border-box;
+}
+
+.appHeader {
+  z-index: 10;
+  cursor: pointer;
+}
+
+.header {
+  width: 100vw;
+  //height: 80px;
+  //padding: 20px;
+  height: 52px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  h2 {
+    margin-bottom: 0;
+  }
+}
+
+.model {
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+.selectedTableRow {
+  outline: 2px solid;
+}
+
+.selectedTableRow td {
+  border-top: 2px solid green;
+}

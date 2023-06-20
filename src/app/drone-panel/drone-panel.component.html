@@ -1,0 +1,18 @@
+<h6 class="drone-header">
+  Drones
+  <span class="badge" *ngIf="drones.length > 0">{{ drones.length }}</span>
+  <span class="badge" *ngIf="drones.length == 0">None</span>
+</h6>
+
+<div class="list-group list-group-flush drone-panel-list">
+  <!-- <app-drone-panel-list-item
+    class="drone" *ngFor="let i of numDrones;" [drone]="drones[i]" [index]="i">
+  </app-drone-panel-list-item>  -->
+  <app-drone-panel-list-item
+    class="drone"
+    *ngFor="let i of numDrones"
+    [drone]="drones[i]"
+    [index]="i"
+  >
+  </app-drone-panel-list-item>
+</div>

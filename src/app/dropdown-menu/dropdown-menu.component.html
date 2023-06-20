@@ -1,0 +1,14 @@
+<h6>
+  {{ currentLocation }}
+  <button mat-icon-button class="menu-button" (click)="toggleMenu()">
+    <fa-icon [icon]="menuIcon"></fa-icon>
+  </button>
+</h6>
+<div *ngIf="menuVisible" class="config-menu">
+  <div class="menu-option" [ngClass]=" {'active': isActive('/') }" (click)="configNavigate('')">Map</div>
+  <div class="menu-option" [ngClass]=" {'active': isActive('/connections') }" (click)="configNavigate('connections')">Drone Connections</div>
+  <div class="menu-option" [ngClass]=" {'active': isActive('/mission') }" (click)="configNavigate('mission')">Mission Wizard</div>
+  <!-- <div class="menu-option" [class.disabled]="noMission" (click)="!noMission && configNavigate('mission-status')">
+    Mission Status</div> -->
+  <div class="menu-option" [ngClass]=" {'active': isActive('/create-role') }" (click)="configNavigate('create-role')">Create Role</div>
+</div>

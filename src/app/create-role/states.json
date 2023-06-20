@@ -1,0 +1,136 @@
+{
+	"states": [{
+			"name": "MISSION_PREPARATION",
+			"transitions": [{
+				"target": "ONGROUND",
+				"condition": "MissionConfigured"
+			}],
+			"group": "Takeoff"
+		},
+		{
+			"name": "ONGROUND",
+			"transitions": [{
+				"target": "PREFLIGHT",
+				"condition": "usr_initiated_preflight"
+			}],
+			"group": "Takeoff"
+		},
+		{
+			"name": "PREFLIGHT",
+			"transitions": [{
+				"target": "STANDBY",
+				"condition": "succeeded_preflight"
+			}],
+			"group": "Takeoff"
+		},
+		{
+			"name": "STANDBY",
+			"transitions": [{
+				"target": "ARM",
+				"condition": "succeeded_standby"
+			}],
+			"group": "Takeoff"
+		},
+		{
+			"name": "ARM",
+			"transitions": [{
+				"target": "TAKEOFF",
+				"condition": "succeeded_arm"
+			}],
+			"group": "Takeoff"
+		},
+		{
+			"name": "TAKEOFF",
+			"transitions": [{
+				"target": "FLY_WAYPOINTS",
+				"condition": "succeeded_takeoff"
+			}, {
+				"target": "LAND",
+				"condition": "failed_takeoff"
+			}],
+			"group": "Takeoff"
+		},
+		{
+			"name": "FLY_WAYPOINTS",
+			"transitions": [{
+				"target": "SEARCHING",
+				"condition": "succeeded_waypoints"
+			}, {
+				"target": "POSITIONDROP",
+				"condition": "succeeded_waypoints"
+			}, {
+				"target": "HOVER",
+				"condition": "succeeded_waypoints"
+			}],
+			"group": "Mission"
+		},
+		{
+			"name": "SEARCHING",
+			"transitions": [{
+				"target": "POSSIBLE_VICTIM_DETECTED",
+				"condition": "succeeded_searching"
+			}, {
+				"target": "RETURN_HOME",
+				"condition": "cmd_return"
+			}],
+			"group": "Mission"
+		},
+		{
+			"name": "VICTIM_FOUND",
+			"transitions": [{
+				"target": "SEARCHING",
+				"condition": "cmd_track"
+			}, {
+				"target": "TRACKING",
+				"condition": "cmd_track"
+			}],
+			"group": "Mission"
+		},
+		{
+			"name": "HOVER",
+			"transitions": [{
+				"target": "RETURN_HOME",
+				"condition": "succeeded_hover"
+			}],
+			"group": "Mission"
+		},
+		{
+			"name": "DROPPING",
+			"transitions": [{
+				"target": "RETURN_HOME",
+				"condition": "succeeded_dropping"
+			}],
+			"group": "Mission"
+		},
+		{
+			"name": "TRACKING",
+			"transitions": [{
+				"target": "RETURN_HOME",
+				"condition": "succeeded_tracking"
+			}],
+			"group": "Mission"
+		}, {
+			"name": "RETURN_HOME",
+			"transitions": [{
+				"target": "LAND",
+				"condition": "succeeded_return_home"
+			}],
+			"group": "End"
+		},
+		{
+			"name": "LAND",
+			"transitions": [{
+				"target": "DISARMING",
+				"condition": "succeeded_land"
+			}],
+			"group": "End"
+		}, {
+			"name": "DISARMING",
+			"transitions": [{
+				"target": "ONGROUND",
+				"condition": "succeeded_disarm"
+			}],
+			"group": "End"
+		}
+	]
+}

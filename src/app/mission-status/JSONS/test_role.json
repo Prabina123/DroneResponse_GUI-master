@@ -1,0 +1,65 @@
+{
+	"name": "test_role",
+	"states": [
+		{
+			"name": "PREFLIGHT",
+			"group": "Takeoff",
+			"transitions": [
+				{
+					"target": "ARM",
+					"condition": "PreflightDone"
+				}
+			]
+		},
+		{
+			"name": "ARM",
+			"group": "Takeoff",
+			"transitions": [
+				{
+					"target": "TAKEOFF",
+					"condition": "Armed"
+				}
+			]
+		},
+		{
+			"name": "TAKEOFF",
+			"group": "Takeoff",
+			"transitions": [
+				{
+					"target": "HOVER",
+					"condition": "ReadyToHover"
+				}
+			]
+		},
+		{
+			"name": "HOVER",
+			"group": "Mission",
+			"transitions": [
+				{
+					"target": "LAND",
+					"condition": "CalledToLand"
+				}
+			]
+		},
+		{
+			"name": "LAND",
+			"group": "End",
+			"transitions": [
+				{
+					"target": "DISARM",
+					"condition": "OnGround"
+				}
+			]
+        },
+        {
+			"name": "DISARM",
+			"group": "End",
+			"transitions": [
+				{
+					"target": "PREFLIGHT",
+					"condition": "NewFlight"
+				}
+			]
+		}
+	]
+}

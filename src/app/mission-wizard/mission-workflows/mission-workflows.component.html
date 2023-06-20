@@ -1,0 +1,126 @@
+<div class="row mission-content">
+  <div class="mission-workflow-wrapper">
+    <h4 class="mission-workflow-header">Mission Workflow(s)</h4>
+    <div class="hide-unhide-button-wrapper">
+      <button
+        *ngIf="!toggleHideUnselected"
+        (click)="hideUnselectedWorkflow(true)"
+        class="hide-unhide-button"
+      >
+        Hide Unselected
+      </button>
+      <button
+        *ngIf="toggleHideUnselected"
+        (click)="hideUnselectedWorkflow(false)"
+        class="hide-unhide-button"
+      >
+        Show All
+      </button>
+    </div>
+  </div>
+  <div class="content-area">
+    <div
+      *ngFor="let item of roles; let i = index"
+      [style]="checkCompleted(item.role.role_name)"
+      class="listItem"
+    >
+      <div style="width: 35%; font-size: large">
+        <mat-checkbox
+          (change)="onRoleToggle(item.role.role_name, $event.checked)"
+          [checked]="checkSelected(item.role.role_name)"
+        >
+          {{ item.role.role_description }}
+        </mat-checkbox>
+        <p style="width: 100%; font-size: medium; margin-bottom: 0">
+          <app-mission-config
+            [text]="item.role.role_description"
+            [wordLimit]="8"
+          >
+          </app-mission-config>
+        </p>
+      </div>
+      <div>
+        <mat-form-field
+          style="width: 100%; margin-top: 25px;"
+          appearance="fill"
+          *ngIf="checkSelected(item.role.role_name)"
+        >
+          <mat-label>Selected Drones</mat-label>
+          <mat-select
+            (selectionChange)="droneSelectionChange(item.role.role_name)"
+            [(ngModel)]="selectedDrones[item.role.role_name]"
+            multiple
+          >
+            <mat-option
+              *ngFor="let drone of drones"
+              [value]="drone.uavid"
+              [disabled]="
+                isAlreadySelectedDrone(drone.uavid, item.role.role_name)
+              "
+            >
+              {{ drone.uavid }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div>
+        <div *ngIf="item.role.map_display == 'true' && checkSelected(item.role.role_name)"></div>
+        <div *ngIf="item.role.map_display == 'true' && checkSelected(item.role.role_name)"></div>
+        <div *ngIf="item.role.map_display != 'true' && checkSelected(item.role.role_name)">
+          <mat-form-field
+            appearance="fill"
+            style="width: 105px; margin-top: 23px; margin-right: -15px"
+          >
+            <mat-label>Drone</mat-label>
+            <mat-select
+              (selectionChange)="addSelectedToRole($event.value, item.role.role_name)"
+            >
+              <mat-option
+                *ngFor="let drone of drones"
+                [value]="drone.uavid"
+              >
+                {{ drone.uavid }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div>
+        <div
+          style="text-align: center"
+          *ngIf="checkCompleted(item.role.role_name)"
+        >
+          <span style="font-size: 12px; font-weight: bolder">
+            DRONES: {{ getMissionDrones(item.role.role_name).length }}
+          </span>
+          <br/>
+          <i
+            *ngFor="let d of getMissionDrones(item.role.role_name)"
+            style="background-color: {{ d }}; color: {{ d }}; font-size: 25px; width: 10px"
+          >a</i
+          ><br/>
+        </div>
+      </div>
+      <div
+        style="text-align: center"
+        *ngIf="checkCompleted(item.role.role_name) && item.role.map_display == 'true'"
+      ></div>
+      <div *ngIf="item.role.map_display == 'true' && checkSelected(item.role.role_name)">
+        <button
+          (click)="showMap(item.role.role_name)"
+          style="
+            border-radius: 5px;
+            background-color: #2979f9;
+            color: white;
+            cursor: pointer;
+            float: right;
+            border: #2979f9;
+          "
+        >
+          <span *ngIf="getMissionDrones(item.role.role_name).length >= 1">Reconfigure</span>
+          <span *ngIf="getMissionDrones(item.role.role_name).length == 0">Configure</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

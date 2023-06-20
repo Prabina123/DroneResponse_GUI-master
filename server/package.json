@@ -1,0 +1,21 @@
+{
+	"name": "drone-response-server",
+	"version": "1.0.0",
+	"description": "Node.JS server for the Drone Response application",
+	"main": "index.js",
+	"dependencies": {
+		"dotenv": "^16.0.0",
+		"mongoose": "^5.13.7",
+		"mqtt": "^4.2.8",
+		"nodemon": "^2.0.20",
+		"socket.io": "^3.1.0",
+		"winston": "^3.6.0",
+		"ws": "^7.5.9"
+	},
+	"scripts": {
+		"start": "node index.js",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "",
+	"license": "ISC"
+}

@@ -1,0 +1,47 @@
+<div class="row no-gutters wizard-row">
+  <div class="col-sm-9 no-float">
+    <app-mission-wizard-nav [mission]="mission" [drones]="drones"></app-mission-wizard-nav>
+    <div [hidden]="!mapView">
+      <map-box
+        [map]="map"
+        [flightPathLayer]="flightPathLayer"
+        [polygonLayer]="polygonLayer"
+        [layers]="layers"
+        [iconGeojson]="iconGeojson"
+        [mainScreen]="false"
+      ></map-box>
+    </div>
+    <div [hidden]="mapView">
+      <app-mission-workflows
+        #workflows
+        [mission]="mission"
+        [drones]="drones"
+        [mapView]="mapView"
+        (showMapView)="showMapView($event)"
+        (selectedDronesEmitter)="selectedDronesChange($event)"
+      ></app-mission-workflows>
+    </div>
+  </div>
+  <div class="col-sm-3 no-float sidebar">
+    <div class="sidebar-header">
+      <app-dropdown-menu currentLocation="Mission Wizard"></app-dropdown-menu>
+    </div>
+    <div class="sidebar-body">
+      <app-mission-route-region
+        *ngIf="mapView"
+        [drones]="drones"
+        [flightPathLayer]="flightPathLayer"
+        [polygonLayer]="polygonLayer"
+        [map]="map"
+        [selectedDrones]="selectedDrones"
+        [selectedRole]="selectedRole"
+        [mission]="mission"
+        [mapView]="mapView"
+        (hideMapView)="hideMapView($event)"
+      ></app-mission-route-region>
+      <div *ngIf="!mapView">
+        <app-drone-panel [drones]="drones"></app-drone-panel>
+      </div>
+    </div>
+  </div>
+</div>

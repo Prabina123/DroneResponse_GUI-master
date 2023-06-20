@@ -1,0 +1,118 @@
+.drone-view {
+  width: 100%;
+  display: flex;
+  position: fixed;
+  box-sizing: border-box;
+}
+
+.drone-col {
+  height: 100%;
+}
+
+.border-shadow {
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.information {
+  border: 1px solid #ccc;
+  border-radius: 1px solid #ccc;
+  height: 100%;
+}
+
+.drone-list {
+  height: 100%;
+  margin-top: 25px;
+}
+
+.drone-list-item {
+  width: 30%;
+  height: 49%;
+  margin-bottom: 1.7%;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  /* Hide scrollbar on Firefox/Edge */
+  scrollbar-width: none;
+}
+
+/* Hide scrollbar on Chrome/Safari */
+.drone-list-item::-webkit-scrollbar {
+  display: none;
+}
+
+.drone-header {
+  cursor: pointer;
+  display: flex;
+}
+
+.drone-list-icon {
+  font-size: 7vh;
+  padding-left: 0.5vw;
+  position: relative;
+}
+
+.drone-header-info {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: bold;
+  width: 100%;
+  padding-left: 2vw;
+  padding-top: 0.75vh;
+  font-size: 2vh;
+}
+
+.drone-body {
+  padding-left: 0.5vw;
+}
+
+.select-drone {
+  float: right;
+  margin-right: 1vw;
+}
+
+.action-bar {
+  background-color: #EEEEEE;
+  height: 6vh;
+  margin-left: 2vw;
+  position: absolute;
+  bottom: 5%;
+  width: 95vw;
+}
+
+.action-col {
+  border-right: 2px dashed #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.last-col {
+  border: none;
+}
+
+.action-button {
+  display: inline-block;
+  cursor: pointer;
+  height: 4.5vh;
+  line-height: 4vh;
+  background-color: #454545;
+  border: 1px solid #ccc;
+  color: #fff;
+  margin-right: 2vw;
+  padding: 0vh 1.5vw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: bold;
+}
+
+.action-button:focus {
+  outline: none;
+}
+
+.last-button {
+  margin-right: 0;
+}

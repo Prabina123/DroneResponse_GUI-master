@@ -1,0 +1,128 @@
+<div class="missions-section mt-2">
+  <div class="top-button-group">
+    <input
+      #jsonInput
+      type="file"
+      hidden="true"
+      onclick="this.value=null"
+      (change)="selectJsonFile($event)"
+      accept=".json"
+    />
+    <button
+      mat-flat-button
+      color="primary"
+      (click)="jsonInput.click()"
+      [disabled]="isUploadingMission"
+    >
+      <mat-icon>upload</mat-icon>
+    </button>
+    <button
+      mat-flat-button
+      color="primary"
+      [matMenuTriggerFor]="menu"
+      [disabled]="!selectedMission"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <div class="deleteDialog">
+        <h4>
+          Are you sure you want to delete mission
+          {{ selectedMission?.name }}?
+        </h4>
+        <div class="d-flex mt-4">
+          <button
+            mat-stroked-button
+            color="warn"
+            (click)="handleDeleteMission()"
+          >
+            Yes
+          </button>
+          <button mat-stroked-button style="margin-left: 5px">No</button>
+        </div>
+      </div>
+    </mat-menu>
+    <button
+      mat-flat-button
+      color="primary"
+      (click)="saveUploadedMission()"
+      [disabled]="!isUploadingMission"
+    >
+      <mat-icon>save</mat-icon>
+    </button>
+    <button
+      mat-flat-button
+      color="primary"
+      (click)="cancelAction()"
+    >
+      <mat-icon>cancel</mat-icon>
+    </button>
+
+  </div>
+
+  <div *ngIf="isUploadingMission">
+    <p class="file-name">{{ fileName }}</p>
+    <input
+      matInput
+      placeholder="Mission Name"
+      class="input-box"
+      [(ngModel)]="missionName"
+      (change)="checkMissionName()"
+    />
+  </div>
+  <small class="text-danger" *ngIf="isUploadingMission && missionNameError">
+    {{ missionNameError }}
+  </small>
+
+  <div class="search-missions">
+    <input
+      matInput
+      placeholder="Search missions"
+      class="input-box"
+      [(ngModel)]="searchTerm"
+      (input)="searchMissions()"
+    />
+  </div>
+</div>
+
+<div class="accordion mt-4" id="missionAccordion">
+  <div
+    *ngFor="let mission of displayedMissions; let idx = index"
+    (click)="handleMissionSelect(mission)"
+    class="mission card"
+    [attr.id]="'card' + idx"
+  >
+    <div
+      class="card-header"
+      [attr.id]="'heading' + idx"
+      data-toggle="collapse"
+      [attr.data-target]="'#collapse' + idx"
+      aria-expanded="true"
+      [class.opened]="mission.name === selectedMission?.name"
+      aria-controls="collapseOne"
+    >
+      <div class="visible-route-data">
+        <div class="mission-name">
+          <b>{{ mission.name }}</b>
+        </div>
+      </div>
+    </div>
+    <div
+      [attr.id]="'collapse' + idx"
+      class="collapse"
+      [attr.aria-labelledby]="'heading' + idx"
+      data-parent="#missionAccordion"
+    >
+      <div class="card-body">
+        <div class="mission-data">
+          <div class="left-data">
+            <p>Created: {{ getDate(mission.created) }}</p>
+          </div>
+          <div class="right-data">
+            <p>Number of Drones: {{ mission.droneCount }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

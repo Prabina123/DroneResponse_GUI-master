@@ -1,0 +1,53 @@
+<div class="row no-gutters map-row">
+  <div class="col-sm-9 no-float drone-col" id="map-col">
+    <map-box
+      [map]="map"
+      [flightPathLayer]="flightPathLayer"
+      [polygonLayer]="polygonLayer"
+      [layers]="layers"
+      [iconGeojson]="iconGeojson"
+      [mainScreen]="true"
+      ></map-box>
+  </div>
+
+  <div class="col-sm-3 no-float sidebar">
+    <div class="sidebar-header">
+      <app-dropdown-menu currentLocation="Home"></app-dropdown-menu>
+    </div>
+    <div class="sidebar-body">
+      <mat-tab-group (selectedTabChange)="tabChangeEvent($event)">
+        <mat-tab label="Drones">
+          <app-drone-panel [drones]="drones"></app-drone-panel>
+        </mat-tab>
+        <mat-tab label="Routes">
+          <map-routes
+            [flightPathLayer]="flightPathLayer"
+            [polygonLayer]="polygonLayer"
+            [map]="map"
+            [flightRoutes]="flightRoutes"
+            [assignments]="{}"
+            [tabChange]="tabChangeSubject.asObservable()"
+          ></map-routes>
+        </mat-tab>
+        <mat-tab label="Regions">
+          <map-regions
+            [flightPathLayer]="flightPathLayer"
+            [polygonLayer]="polygonLayer"
+            [map]="map"
+            [regions]="regions"
+            [tabChange]="tabChangeSubject.asObservable()"
+          ></map-regions>
+        </mat-tab>
+        <mat-tab label="Missions">
+          <mission-jsons
+            [flightPathLayer]="flightPathLayer"
+            [polygonLayer]="polygonLayer"
+            [map]="map"
+            [missionJsons]="missionJsons"
+            [tabChange]="tabChangeSubject.asObservable()"
+          ></mission-jsons>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+{"drones":
+    [{
+        "altitude": "0.1",
+        "uavid": "Red",
+        "status": {
+          "status": true,
+          "battery": {
+            "level": 90
+          },
+          "location": {
+            "altitude": 0.1,
+            "airspeed": 100,
+            "latitude": 41.705030,
+            "longitude": -86.241960
+          }
+        },
+        "name": "Red"
+      }
+    ]
+}

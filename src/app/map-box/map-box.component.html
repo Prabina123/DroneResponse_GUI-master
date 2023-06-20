@@ -1,0 +1,270 @@
+<div id="map" [style.height]="mainScreen ? '100vh' : '88vh'"></div>
+
+<!-- Region Drag drop area -->
+<div *ngIf="dragData.isDragging">
+  <section
+    dndDropzone
+    (dndDragover)="onDragover($event)"
+    (dndDrop)="onDrop($event, region.data)"
+    *ngFor="let region of dragData.regions; let idx = index"
+    style="z-index: 9999999; position: absolute"
+    [ngStyle]="{
+      top: region.y + 'px',
+      left: region.x + 'px',
+      width: region.width + 'px',
+      height: region.height + 'px'
+    }"
+  >
+    <!--optional placeholder element for dropzone-->
+    <!--will be removed from DOM on init-->
+    <!-- <div
+      style="border: 1px orangered solid; border-radius: 5px; padding: 15px"
+      dndPlaceholderRef
+    >
+      placeholder
+    </div> -->
+  </section>
+</div>
+<!-- start//........................................................... -->
+<!-- Region Drone Points -->
+<div *ngFor="let region of dragData.regions; let idx = index">
+  <!-- Drone Points -->
+  <div *ngIf="region?.drones?.length">
+    <div
+      [dndDraggable]="{drone, region}"
+      dndType="droneTrash"
+      *ngFor="let drone of region.drones; let i = index"
+      class="drone-point"
+      [ngStyle]="{
+        top: drone.y + 'px',
+        left: drone.x + 'px',
+        background: drone.color
+      }"
+    ></div>
+  </div>
+</div>
+
+<!-- Drag Drop Drone Trash -->
+<div
+  [dndDropzone]="['droneTrash']"
+  class="trash"
+  (dndDrop)="onTrashDrop($event)"
+>
+  <mat-icon>delete</mat-icon>
+</div>
+
+<!-- //........................................................... -->
+
+<!-- Map Tools - toolbox, layers, airmap buttons-->
+<div class="map-tools">
+  <!-- <div class="tool-box">-->
+  <!-- Edit collapse bar -->
+  <ul class="list-group list-group-horizontal tools">
+    <!-- <li data-toggle="collapse" data-target="#toolExpand" class="list-group-item main-icon"> -->
+    <li
+      data-toggle="collapse"
+      data-target="#toolExpand"
+      class="list-group-item main-icon"
+    >
+      <fa-icon [icon]="editIcon"></fa-icon>
+    </li>
+    <!-- <li *ngFor="let tool of toolbox;" id="toolExpand" class="list-group-item collapse" (click)="toolRouter(tool)"
+      [ngClass]="{'active': tool.toggle === true}"> -->
+    <li
+      *ngFor="let tool of toolbox"
+      id="toolExpand"
+      class="list-group-item collapse"
+      (click)="toolRouter(tool)"
+      [ngClass]="{ active: tool.toggle === true }"
+    >
+      <fa-icon [icon]="tool.icon"></fa-icon>
+    </li>
+  </ul>
+
+  <!-- Layer collapse bar -->
+  <ul class="list-group list-group-horizontal tools">
+    <!-- <li data-toggle="collapse" data-target="#layerExpand" class="list-group-item main-icon"> -->
+    <li
+      data-toggle="collapse"
+      data-target="#layerExpand"
+      class="list-group-item main-icon"
+    >
+      <fa-icon [icon]="layerIcon"></fa-icon>
+    </li>
+    <!-- <li *ngFor="let layer of layers" id="layerExpand" class="list-group-item collapse" (click)="layer.toggleLayer();"
+      [ngClass]="{'active': layer.getVisibility() === 'visible'}"> -->
+      <li
+      *ngFor="let layer of layers"
+      id="layerExpand"
+      class="list-group-item collapse"
+      (click)="layer.toggleLayer()"
+      [ngClass]="{ active: layer.getVisibility() === 'visible' }"
+    >
+      <fa-icon [icon]="layer.iconImage"></fa-icon>
+    </li>
+  </ul>
+  <!-- Airmap Layers-->
+  <div class="airmap-layers">
+    <ul class="list-group list-group-horizontal">
+      <li data-toggle="collapse" data-target="#airmapExpand"
+        class="list-group-item main-icon airmap-icon airmap-expand">
+        <fa-icon [icon]="airplaneIcon"></fa-icon><br>
+        <p class="airmap-text">Air Space</p>
+      </li>
+
+      <li *ngFor="let airLayer of airmap.airmapLayers; let idx=index;" id="airmapExpand"
+        class="list-group-item collapse airmap-expand" (click)="airmap.toggleAirSpace(airLayer)"
+        [ngClass]="{'active': airLayer.view === 'visible'}">
+        <fa-icon [icon]="airLayer.icon"></fa-icon>
+        <p class="airmap-text">{{ airLayer.ruleText }}</p>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div [hidden]="!airmap.alertVisible" id="airmap-alert-box" class="airmap-alert-box">
+  <ul class="list-group">
+    <li data-toggle="collapse" data-target="#alertExpand" class="list-group-item alert-icon"
+      (click)="airmap.closeVisible=!airmap.closeVisible">
+      <fa-icon [icon]="alertIcon"></fa-icon>
+      <span [hidden]="!airmap.closeVisible" (click)="airmap.alertVisible=false" class="close">x</span>
+    </li>
+    <li id="alertExpand" class="list-group-item airmap-alert collapse" *ngFor="let alert of airmap.air_info">
+      <div class="alert-text">
+        <b>Name: </b>{{ alert.name }}<br>
+        <b>Ruleset: </b>{{ alert.rule }}<br>
+        <b>Absolute Max. Altitude: </b>{{ alert.ceiling }}<br>
+        <b>Unrestricted Max. Altitude: </b>{{alert.floor }}
+      </div>
+    </li>
+  </ul>
+</div>
+<div class="btn-toolbar">
+  <div class="map-layer-styles ">
+    <button type="button" class="btn  map-style-btn mr-2 mb-2"
+      (click)="switchMaplayerStyle('Satellite')">Satellite</button>
+    <button type="button" class="btn  map-style-btn mr-2 mb-2" (click)="switchMaplayerStyle('Streets')">Streets</button>
+
+  </div>
+  <!-- <div class="map-layer-styles btn-group mr-2">
+    </div> -->
+</div>
+
+
+
+<!--Drone Explain Box-->
+<div *ngFor="let explain of explains; let i = index" class="drone-explain-box" id="explain-box-{{i}}">
+  <div *ngIf=explain.droneExplainBoxVisible>
+
+    <div class="card card-style">
+      <div class='explain-box-header'>
+        <h5 class="card-header" id="explain-header" style="line-height: 60%;">Drone Autonomy
+          <span class="close" (click)="droneLayer.closeExplain(i)">x</span>
+        </h5>
+        <!-- <div class="row explanation-row">
+          <div class="col-sm-7">
+            <p>
+              {{ explain.alert }}
+            </p>
+          </div>
+          <div class="col-sm-4">
+            <b> Confidence: </b>{{ explain.confidence }}
+          </div>
+        </div> -->
+
+      </div>
+
+      <div class="validation-box" style="background-color: white; font-size: large;">
+        <div class="row">
+          <!-- <div class="col-md-6 col-md-offset-3">
+              Referenced Images
+            </div> -->
+
+        </div>
+        <div class="row" style="padding:2%">
+
+          <div class="col-sm-4" *ngFor="let img_src of explain.image_urls" style="align-items: center;">
+
+            <img src={{img_src}} width="120px" height="100px" style="border: 1px solid black">
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="card-body text-left">
+        <div class="row" style="font-size: large;">
+          <!-- <div class="col-6 d-flex justify-content-center text-center">
+              Autonomous Actions
+            </div> -->
+
+        </div>
+
+        <div class="drone-autonomous-actions">
+          <ul class="list-group">
+            <li *ngFor="let action of explain.autoActions" class="list-group-item">
+              <div class="row">
+                <!-- <div class="col-sm-2">
+                    <fa-icon [icon]="infoIcon"></fa-icon>
+                  </div> -->
+                <div class="col-sm-7" style="font-size: medium;">
+                  <div *ngFor="let line of action.description" class="row">
+                    {{ line }}
+                  </div>
+                </div>
+
+                <div class="col-sm-5">
+
+                  <div class="custom-control custom-switch" *ngIf=action.switch_control>
+                    <input id="customSwitch1" class="custom-control-input" type="checkbox">
+                    <label class="custom-control-label" for="customSwitch1">Reject Action</label>
+                  </div>
+
+                </div>
+
+
+
+              </div>
+            </li>
+          </ul>
+        </div>
+
+
+      </div>
+
+      <div class="btn-group" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-light" (click)="explain.reward()">
+          <div class="row">
+            <div class="col-sm-3 reward-icon text-right">
+              <fa-icon [icon]="rewardIcon"></fa-icon>
+            </div>
+            <div class="col-sm-9 text-left">
+              Reward
+            </div>
+          </div>
+        </button>
+        <button type="button" class="btn btn-light" (click)="explain.suspend()">
+          <div class="row">
+            <div class="col-sm-3 suspend-icon text-right">
+              <fa-icon [icon]="suspendIcon"></fa-icon>
+            </div>
+            <div class="col-sm-9 text-left">
+              Suspend
+            </div>
+          </div>
+        </button>
+        <button type="button" class="btn btn-light" (click)="explain.configure()">
+          <div class="row">
+            <div class="col-sm-3 configure-icon text-right">
+              <fa-icon [icon]="configureIcon"></fa-icon>
+            </div>
+            <div class="col-sm-9 text-left">
+              Configure
+            </div>
+          </div>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>

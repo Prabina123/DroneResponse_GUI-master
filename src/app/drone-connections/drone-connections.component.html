@@ -1,0 +1,84 @@
+<div class="row no-gutters drone-view">
+  <div class="col-sm-9 no-float drone-col pl-5">
+    <div class="drone-list">
+      <ul class="list-inline drone-list">
+        <li
+          *ngFor="let drone of data; let i = index"
+          class="list-inline-item drone-list-item border-shadow"
+          id="{{ 'drone-' + i + '-item' }}"
+        >
+          <div class="drone-header" (click)="showDrone(i)">
+            <span class="drone-list-icon" [style.color]="drone.uavid"><fa-icon [icon]="droneIcon"></fa-icon></span>
+            <div class="drone-header-info">
+              <span>UAV-{{drone.uavid}}</span><br>
+              <span>Color: {{drone.uavid}}</span><br>
+              <!-- <span>Port: {{drone.ip.substr(drone.ip.length - 5)}}</span> -->
+            </div>
+          </div>
+          <div class="drone-body">
+            <div> 
+              <span class="text-m">Status: {{drone.status.status}}</span>
+            </div>
+            <div>
+              <span><fa-icon [icon]="batteryIcon"></fa-icon> Battery: {{drone.status.battery.level * 100 | number: '1.0'}}%</span>
+            </div>
+            <div>
+              <span><fa-icon [icon]="altitudeIcon"></fa-icon> Altitude: {{drone.status.location.altitude + 0 | number: '1.2-2'}}m</span>
+            </div>
+            <div>
+              <span><fa-icon [icon]="longLatIcon"></fa-icon> Long: {{drone.status.location.longitude + 0 | number: '2.7'}}</span>
+            </div>
+            <div>
+              <span><fa-icon [icon]="longLatIcon"></fa-icon> Lat: {{drone.status.location.latitude + 0 | number: '2.7'}}</span>
+            </div>
+            <div>
+                <span><fa-icon [icon]="geofenceIcon"></fa-icon> GeoFence: {{drone.status.geofence ? "Set" : "Not set"}}</span>
+            </div>
+            <mat-checkbox
+              class="select-drone"
+              [color]="'primary'"
+              [checked]="selectedDrones[i]"
+              (change)="toggleCheckbox(i)"
+            ></mat-checkbox>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-sm-3 no-float drone-col">
+    <app-drone-arming-check
+      *ngIf="data[selectedIndex]"
+      [drone]="data[selectedIndex]"
+      [index]="selectedIndex"
+      [status]="statuses.get(data[selectedIndex].uavid)"
+    ></app-drone-arming-check>
+  </div>
+
+</div>
+
+<div class="row no-gutters action-bar border-shadow">
+  <div class="col-sm-6 action-col">
+    <button mat-raised-button class="action-button" (click)="setGeoFence()">
+      Set GeoFence
+    </button>
+    <button mat-raised-button class="action-button" (click)="sendCommand('arm')">
+      Arm
+    </button>
+    <button mat-raised-button class="action-button last-button" (click)="sendCommand('disarm')">
+      Disarm
+    </button>
+  </div>
+  <div class="col-sm-4 action-col">
+    <button mat-raised-button class="action-button" (click)="selectAll()">
+      Select All
+    </button>
+    <button mat-raised-button class="action-button last-button" (click)="clearAll()">
+      Clear All
+    </button>
+  </div>
+  <div class="col-sm-2 action-col last-col">
+    <button mat-raised-button class="action-button last-button" (click)="showMap()">
+      Map <fa-icon [icon]="geofenceIcon"></fa-icon>
+    </button>
+  </div>
+</div>

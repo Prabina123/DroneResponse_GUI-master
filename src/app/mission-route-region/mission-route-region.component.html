@@ -1,0 +1,93 @@
+<div class="selector-container">
+  <mat-icon class="back-arrow" (click)="this.hideMap()">arrow_back</mat-icon>
+  <div class="content-area">
+    <mat-tab-group disablePagination>
+      <mat-tab *ngIf="selectedRole.map_display_options.includes('routes')" label="Routes">
+        <map-routes
+          [flightPathLayer]="flightPathLayer"
+          [polygonLayer]="polygonLayer"
+          [map]="map"
+          [flightRoutes]="flightRoutes"
+          [assignments]="assignments"
+          [tabChange]="tabChangeSubject.asObservable()"
+        ></map-routes>
+      </mat-tab>
+      <mat-tab *ngIf="selectedRole.map_display_options.includes('regions')" label="Regions">
+        <map-regions
+          [flightPathLayer]="flightPathLayer"
+          [polygonLayer]="polygonLayer"
+          [map]="map"
+          [regions]="regions"
+          [tabChange]="tabChangeSubject.asObservable()"
+        ></map-regions>
+      </mat-tab>
+      <mat-tab *ngIf="selectedRole.map_display_options.includes('missions')" label="Missions">
+        <mission-jsons
+          [flightPathLayer]="flightPathLayer"
+          [polygonLayer]="polygonLayer"
+          [map]="map"
+          [missionJsons]="missionJsons"
+          [tabChange]="tabChangeSubject.asObservable()"
+        ></mission-jsons>
+      </mat-tab>
+    </mat-tab-group>
+   
+    <ng-container *ngIf="!selectedRole.map_display_options.includes('missions')">
+      <div *ngFor="let drone of selectedDrones[selectedRole.role_name]" class="selectors">
+        <mat-form-field appearance="fill" class="selection-form">
+          <mat-label>{{ drone }}</mat-label>
+          <mat-select (selectionChange)="onDroneRouteSelect($event.value, drone)">
+            <mat-option>None</mat-option>
+            <ng-container *ngIf="selectedRole.map_display_options.includes('routes')">
+              <mat-option
+                *ngFor="let route of flightRoutes"
+                [disabled]="isAlreadySelectedRoute(route.sourceID)"
+                [value]="{ type: 'routes', value: route }"
+              >
+                {{ route.routeName }} (Route)
+              </mat-option>
+            </ng-container>
+
+            <ng-container *ngIf="selectedRole.map_display_options.includes('regions')">
+              <mat-option 
+                *ngFor="let region of regionNames"
+                [value]="{ type: 'region', value: region }">
+                {{ region }} (Region)
+              </mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+        <p *ngIf="routeNumbers.has(drone)" class="starting-point">Region starting point: {{ routeNumbers.get(drone) }}</p>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="selectedRole.map_display_options.includes('missions')">
+      <div class="selectors">
+        <mat-form-field appearance="fill">
+          <mat-label>Mission for {{ selectedDrones[selectedRole.role_name].length }} drones</mat-label>
+          <mat-select (selectionChange)="onMissionSelect($event.value)">
+            <mat-option>None</mat-option>
+            <mat-option
+              *ngFor="let mission of missionJsons"
+              [disabled]="selectedDrones[selectedRole.role_name].length != mission.droneCount"
+              [value]="{ type: 'mission', value: mission }"
+            >
+              {{ mission.name }} (Mission)
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </ng-container>
+
+    <div class="saveBtn">
+      <button
+        style="font-size: 16px; padding: 4px 10px; margin-top: 10px"
+        mat-raised-button
+        [disabled]="!isSaveEnabled()"
+        (click)="onSave()"
+      >
+        Save and continue
+      </button>
+    </div>
+  </div>
+</div>

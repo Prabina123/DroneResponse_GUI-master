@@ -1,0 +1,169 @@
+@import "~@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
+
+#map {
+  height: 100vh;
+}
+
+.map-tools {
+  position: absolute;
+  left: 1%;
+  bottom: 1%;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.tool-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.main-icon {
+  background-color: #F5F5F5;
+  border-color: black;
+  border-radius: 10%;
+  text-align: center;
+}
+
+.airmap-text {
+  font-size: 1vw;
+  white-space: nowrap;
+  margin: 0;
+}
+
+.airmap-icon {
+  background-color: #F5F5F5;
+  border-color: black;
+}
+
+.airmap-expand {
+  padding: 1vh .7vw;
+}
+
+.airmap-alert-box {
+  position: absolute;
+  right: 5%;
+  top: 1%;
+  max-width: 25%;
+  z-index: 2;
+}
+
+.alert-icon {
+  background-color: #fbff00;
+  border-color: black;
+  border-radius: 10%;
+  text-align: center;
+}
+
+.airmap-alert {
+  border-color: black;
+  font-size: 1vw;
+  line-height: 1.5;
+}
+
+.close {
+  font-size: small;
+}
+
+.drone-explain-box {
+  position: absolute;
+  display: inline-block;
+  right: 1%;
+  bottom: 2%;
+  text-align: center;
+  width: 40%;
+  z-index: 1;
+  background-color: white;
+}
+
+#explain-box-1 {
+  right: 45%;
+}
+
+.drone-autonomous-actions {
+  border-style: solid;
+  border-radius: 5px;
+  border-width: 2px;
+}
+
+.reward-icon {
+  color: rgb(8, 100, 31);
+  border-radius: 10%;
+  text-align: center;
+}
+
+.suspend-icon {
+  color: rgb(151, 8, 8);
+  border-radius: 10%;
+  text-align: center;
+}
+
+.configure-icon {
+  color: rgba(73, 6, 104, 0.781);
+  border-radius: 10%;
+  text-align: center;
+}
+
+.explain-box-header {
+  color: white;
+}
+
+.explanation-row {
+  font-size: 1vw;
+}
+
+.card-style {
+  border: 1px solid black;
+}
+
+
+/*Mapbox pop up styling*/
+.mapboxgl-popup-close-button {
+  color: black;
+  display: none;
+}
+
+// Hide link in bottom left corner
+.mapboxgl-ctrl-logo {
+  display: none !important;
+}
+
+.map-layer-styles {
+  position: absolute;
+  right: 4%;
+  bottom: 4%;
+  text-align: center;
+  z-index: 1;
+}
+
+.map-style-btn {
+  background-color: #F5F5F5;
+  background-color: #f5f5f5;
+}
+
+.drone-point {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  // background: yellow;
+  transform: translateX(-50%) translateY(-50%);
+  position: absolute;
+}
+
+.trash {
+  width: 50px;
+  height: 50px;
+  background: white;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.5;
+}
+.trash.dndDragover {
+  opacity: 0.9;
+}

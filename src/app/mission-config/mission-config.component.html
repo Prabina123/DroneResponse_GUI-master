@@ -1,0 +1,7 @@
+<span *ngIf="text.length <= wordLimit && showMore">{{ text }} </span>
+<span *ngIf="text.length > 8 && showMore">{{ text }} 
+  <span (click)="showMore = false" mat-raised-button color="primary" style="color: #2979F9;cursor: pointer;">Less</span>
+</span>
+<span *ngIf="text.length > 8 && !showMore">{{ text.substring(0,8) }}..
+  <span (click)="showMore = true" mat-raised-button style="color: #2979F9;cursor: pointer;">More</span>
+</span>

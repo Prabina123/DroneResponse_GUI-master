@@ -1,0 +1,186 @@
+{
+	"name": "search_and_detect",
+	"states": [
+		{
+			"name": "MissionPreparation",
+			"group": "Takeoff",
+			"transitions": [
+				{
+					"target": "OnGroundAndInactive",
+					"condition": "MissionConfigured"
+				},
+				{
+					"target": "Preflight",
+					"condition": "MissionConfigured"
+				}
+			]
+		},
+		{
+			"name": "OnGroundAndInactive",
+			"group": "Takeoff",
+			"transitions": [
+				{
+					"target": "Preflight",
+					"condition": "PreflightChecksInitiated"
+				}
+			]
+		},
+		{
+			"name": "Preflight",
+			"group": "Takeoff",
+			"transitions": [
+				{
+					"target": "Arming",
+					"condition": "PreflightChecksPassed"
+				},
+				{
+					"target": "OnGroundAndInactive",
+					"condition": "PreflightChecksFailed"
+				}
+			]
+		},
+		{
+			"name": "Arming",
+			"group": "Takeoff",
+			"transitions": [
+				{
+					"target": "TakeOff",
+					"condition": "DroneArmed"
+				},
+				{
+					"target": "OnGroundAndInactive",
+					"condition": "ArmingFailed"
+				}
+			]
+		},
+		{
+			"name": "TakeOff",
+			"group": "Takeoff",
+			"transitions": [
+				{
+					"target": "FlyToDestination",
+					"condition": "AltitudeReached"
+				},
+				{
+					"target": "Land",
+					"condition": "TakeoffFailed"
+				}
+			]
+		},
+		{
+			"name": "FlyToDestination",
+			"group": "Mission",
+			"transitions": [
+				{
+					"target": "Searching",
+					"condition": "DestinationReached"
+				}
+			]
+		},
+		{
+			"name": "Searching",
+			"group": "Mission",
+			"transitions": [
+				{
+					"target": "VictimDetected",
+					"condition": "VictimDetected"
+				},
+				{
+					"target": "UserVictimCheck",
+					"condition": "PossibleVictimDetected"
+				},
+				{
+					"target": "Tracking",
+					"condition": "SelectedToTrack"
+				},
+				{
+					"target": "ReturnHome",
+					"condition": "ReturnHomeCommand"
+				}
+			]
+		},
+		{
+			"name": "VictimDetected",
+			"group": "Mission",
+			"transitions": [
+				{
+					"target": "Searching",
+					"condition": "ContinueSearch"
+				},
+				{
+					"target": "Tracking",
+					"condition": "SelectedToTrack"
+				}
+			]
+		},
+		{
+			"name": "UserVictimCheck",
+			"group": "Mission",
+			"transitions": [
+				{
+					"target": "Searching",
+					"condition": "FalseAlarm"
+				},
+				{
+					"target": "VictimDetected",
+					"condition": "VictimConfirmed"
+				}
+			]
+		},
+		{
+			"name": "Tracking",
+			"group": "Mission",
+			"transitions": [
+				{
+					"target": "ReturnHome",
+					"condition": "ReturnHomeCommand"
+				}
+			]
+		},
+		{
+			"name": "ReturnHome",
+			"group": "End",
+			"transitions": [
+				{
+					"target": "Land",
+					"condition": "HomeReached"
+				}
+			]
+		},
+		{
+			"name": "Land",
+			"group": "End",
+			"transitions": [
+				{
+					"target": "Disarm",
+					"condition": "OnGround"
+				}
+			]
+		},
+		{
+			"name": "Disarm",
+			"group": "End",
+			"transitions": [
+				{
+					"target": "OnGroundAndInactive",
+					"condition": "Disarmed"
+				}
+			]
+		},
+		{
+			"name": "LandSafe",
+            "group": "FailSafe",
+            "transitions": []
+		},
+		{
+			"name": "ReturnToLaunch",
+            "group": "FailSafe",
+            "transitions": []
+		},
+		{
+			"name": "Hover",
+            "group": "FailSafe",
+            "transitions": []
+		}
+	]
+}

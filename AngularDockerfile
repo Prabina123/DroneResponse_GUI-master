@@ -1,0 +1,10 @@
+FROM node:18.13.0 AS builder
+COPY . ./DroneResponse
+WORKDIR /DroneResponse
+RUN npm i
+RUN $(npm bin)/ng build --prod
+
+FROM nginx:latest
+COPY --from=builder /DroneResponse/dist/DroneResponse/ /usr/share/nginx/html
+# Expose port 80
+EXPOSE 80

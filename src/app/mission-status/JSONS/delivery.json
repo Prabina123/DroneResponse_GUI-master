@@ -1,0 +1,152 @@
+{
+	"name": "delivery",
+	"states": [
+		{
+			"name": "MissionPreparation",
+			"group": "Takeoff",
+			"transitions": [
+				{
+					"target": "OnGroundAndInactive",
+					"condition": "MissionConfigured"
+				}
+			]
+		},
+		{
+			"name": "OnGroundAndInactive",
+			"group": "Takeoff",
+			"transitions": [
+				{
+					"target": "Preflight",
+					"condition": "PreflightChecksInitiated"
+				}
+			]
+		},
+		{
+			"name": "OnStandby",
+			"group": "Takeoff",
+			"transitions": [
+				{
+					"target": "Arming",
+					"condition": "DeployCommand"
+				}
+			]
+		},
+		{
+			"name": "Preflight",
+			"group": "Takeoff",
+			"transitions": [
+				{
+					"target": "OnStandby",
+					"condition": "PreflightChecksPassed"
+				},
+				{
+					"target": "OnGroundAndInactive",
+					"condition": "PreflightChecksFailed"
+				}
+			]
+		},
+		{
+			"name": "Arming",
+			"group": "Takeoff",
+			"transitions": [
+				{
+					"target": "TakeOff",
+					"condition": "DroneArmed"
+				},
+				{
+					"target": "OnGroundAndInactive",
+					"condition": "ArmingFailed"
+				}
+			]
+		},
+		{
+			"name": "TakeOff",
+			"group": "Takeoff",
+			"transitions": [
+				{
+					"target": "FlyToDestination",
+					"condition": "AltitudeReached"
+				},
+				{
+					"target": "Land",
+					"condition": "TakeoffFailed"
+				}
+			]
+		},
+		{
+			"name": "FlyToDestination",
+			"group": "Mission",
+			"transitions": [
+				{
+					"target": "PositionForDrop",
+					"condition": "PositionForDrop"
+				}
+			]
+		},
+		{
+			"name": "PositionForDrop",
+			"group": "Mission",
+			"transitions": [
+				{
+					"target": "Dropping",
+					"condition": "Positioned"
+				}
+			]
+		},
+		{
+			"name": "Dropping",
+			"group": "Mission",
+			"transitions": [
+				{
+					"target": "ReturnHome",
+					"condition": "DropCompleted"
+				}
+			]
+		},
+		{
+			"name": "ReturnHome",
+			"group": "End",
+			"transitions": [
+				{
+					"target": "Land",
+					"condition": "HomeReached"
+				}
+			]
+		},
+		{
+			"name": "Land",
+			"group": "End",
+			"transitions": [
+				{
+					"target": "Disarm",
+					"condition": "OnGround"
+				}
+			]
+		},
+		{
+			"name": "Disarm",
+			"group": "End",
+			"transitions": [
+				{
+					"target": "OnGroundAndInactive",
+					"condition": "Disarmed"
+				}
+			]
+		},
+		{
+			"name": "LandSafe",
+            "group": "FailSafe",
+            "transitions": []
+		},
+		{
+			"name": "ReturnToLaunch",
+            "group": "FailSafe",
+            "transitions": []
+		},
+		{
+			"name": "Hover",
+            "group": "FailSafe",
+            "transitions": []
+		}
+	]
+}

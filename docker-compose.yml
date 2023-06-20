@@ -1,0 +1,38 @@
+version: "2"
+services:
+    database:
+        image: mongo
+        ports:
+            - "27017:27017"
+        volumes:
+            - data-volume:/data/db
+    # mosquitto:
+    #     image: eclipse-mosquitto
+    #     ports:
+    #         - "1883:1883"
+    #         - "9001:9001"
+    #     volumes:
+    #         - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+    back_end_server:
+        build: ./server
+        environment:
+            - MONGODB_URI=mongodb://database:27017/droneresponse
+            - MQTT_BROKER_ADDRESS=mqtt://sarec2.crc.nd.edu
+        ports:
+            - "8081:8081"
+            - "6001:6001"
+            - "6002:6002"
+            - "6003:6003"
+        depends_on:
+            # - mosquitto
+            - database
+    front_end_server:
+        build: ./
+        ports:
+            - "4200:80"
+        environment:
+            - CHOKIDAR_USEPOLLING=true
+        depends_on:
+            - back_end_server
+volumes:
+    data-volume:
