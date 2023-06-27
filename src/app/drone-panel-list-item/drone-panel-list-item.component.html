@@ -11,6 +11,7 @@
         [style.color]="drone.uavid"
         [dndDraggable]="drone"
         [dndEffectAllowed]="draggable.effectAllowed"
+        dndType="drone"
         (dndStart)="onDragStart($event)"
         (dndEnd)="onDragEnd($event)"
       >

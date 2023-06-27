@@ -6,6 +6,7 @@ export class GlobalService {
         isDragging: false,
         drone: undefined,
         regions: [],
+        routes: [],
     });
 
     getDragData(): Observable<DroneDrag> {

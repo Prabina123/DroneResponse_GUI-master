@@ -3,7 +3,7 @@
 <!-- Region Drag drop area -->
 <div *ngIf="dragData.isDragging">
   <section
-    dndDropzone
+    [dndDropzone]="['route', 'drone', 'region']"
     (dndDragover)="onDragover($event)"
     (dndDrop)="onDrop($event, region.data)"
     *ngFor="let region of dragData.regions; let idx = index"
@@ -31,10 +31,12 @@
   <!-- Drone Points -->
   <div *ngIf="region?.drones?.length">
     <div
-      [dndDraggable]="{drone, region}"
-      dndType="droneTrash"
+      [dndDraggable]="{drone, type: 'region'}"
       *ngFor="let drone of region.drones; let i = index"
       class="drone-point"
+      (dndStart)="onDragStart($event)"
+      (dndEnd)="onDragEnd($event)"
+      dndType="region"
       [ngStyle]="{
         top: drone.y + 'px',
         left: drone.x + 'px',
@@ -44,9 +46,42 @@
   </div>
 </div>
 
+<!-- Routes Drag Drop Area -->
+
+<div *ngFor="let route of dragData.routes">
+  <div *ngIf="dragData.isDragging">
+    <section
+      [dndDropzone]="['region', 'drone', 'route']"
+      *ngFor="let point of route.points || []"
+      (dndDrop)="onDroneDropOnRoute($event, route.data)"
+      class="dragRoute"
+      [ngStyle]="{
+        top: point.y + 'px',
+        left: point.x + 'px',
+        width: point.width + 'px',
+        transform: 'rotate(' + point.angle + 'deg)'
+      }"
+    ></section>
+  </div>
+  <!-- Route Drone Points -->
+  <div
+    *ngIf="route?.drone"
+    [dndDraggable]="{ drone: route?.drone, type: 'route' }"
+    dndType="route"
+    class="drone-point"
+    (dndStart)="onDragStart($event)"
+    (dndEnd)="onDragEnd($event)"
+    [ngStyle]="{
+      top: route.points[0].y + 'px',
+      left: route.points[0].x + 'px',
+      background: route.drone?.color
+    }"
+  ></div>
+</div>
+
 <!-- Drag Drop Drone Trash -->
 <div
-  [dndDropzone]="['droneTrash']"
+  [dndDropzone]="['region', 'route']"
   class="trash"
   (dndDrop)="onTrashDrop($event)"
 >

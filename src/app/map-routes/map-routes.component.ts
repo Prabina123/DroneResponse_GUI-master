@@ -6,6 +6,8 @@ import { MapService } from '../services/map.service';
 import { IRoute } from '../model/Route';
 import { PolygonLayer } from '../map-layers/PolygonLayer';
 import { Observable } from 'rxjs';
+import { DragRoute } from '../model/Drone';
+import { GlobalService } from '../services/global.service';
 
 @Component({
   selector: 'map-routes',
@@ -29,7 +31,7 @@ export class MapRoutesComponent implements OnInit, OnChanges {
   markerExists: boolean = false;
   tempAlt = 0;
   tempSpeed = 0;
-  routeName: string ='';
+  routeName: string = '';
   checkedNext = false;
 
   isCreatingNewRoute = false;
@@ -47,7 +49,8 @@ export class MapRoutesComponent implements OnInit, OnChanges {
   dragTouchEditRef: any; 
   dragTouchEditMoveRef: any;
 
-  constructor(private mapService: MapService) { }
+  // constructor(private mapService: MapService) { }
+  constructor(private mapService: MapService, private _globalService: GlobalService) { }
 
   ngOnInit(): void {
     this.tabChange.subscribe(() => {
@@ -359,12 +362,52 @@ export class MapRoutesComponent implements OnInit, OnChanges {
     this.resetValues();
     this.selectedRouteObject = route;
     this.flightPathLayer.displayRoute(this.selectedRouteObject.sourceID, false);
+    this.createDragDropRoute(route)
+    // console.log(pointsInPixels);
 
     for (let r of this.flightRoutes) {
       if (this.isAlreadySelectedRoute(r[0])) {
         this.flightPathLayer.displayRoute(r[0], false);
       }
     }
+  }
+
+  createDragDropRoute(route: IRoute) {
+    const coordinatesInPixels = route.pointData.map((point: any) => {
+      const coordinates = point.geometry.coordinates
+      return this.map.project(coordinates);
+    });
+
+    const pointsWithAngles = coordinatesInPixels.map((point: any, index: number) => {
+      const nextPoint = coordinatesInPixels[index + 1];
+      if (!nextPoint) return
+      const distance = this.calculateDistance(nextPoint, point);
+      const angle = this.calculateAngle(nextPoint, point);
+      return {
+        x: nextPoint.x,
+        y: nextPoint.y + 6,
+        angle,
+        width: distance,
+      };
+    }).filter((point: any) => point);
+
+    const dragRoute: DragRoute = {
+      sourceId: route.sourceID,
+      points: pointsWithAngles,
+      name: route.routeName,
+      data: route,
+    }
+
+    // check if the region is already in the dragData
+    const oldDragData = this._globalService.dragData.value
+    const routeIndex = oldDragData.routes.findIndex((route: DragRoute) => route.sourceId === dragRoute.sourceId)
+    if (routeIndex > -1) {
+      oldDragData.routes.splice(routeIndex, 1)
+    }
+    oldDragData.routes.push(dragRoute)
+    const newDragData = { ...oldDragData }
+    this._globalService.setDragData(newDragData)
+    return dragRoute;
   }
 
   // Create listeners on the map for editing routes
@@ -425,6 +468,7 @@ export class MapRoutesComponent implements OnInit, OnChanges {
     this.polygonLayer.clearMap();
     this.resetValues();
     this.mapService.reloadMap();
+    this._globalService.setDragData({ routes: [] })
   }
 
   resetValues(): void {
@@ -479,5 +523,24 @@ export class MapRoutesComponent implements OnInit, OnChanges {
   getDate(dateString: string): string {
     const dateObj = new Date(dateString);
     return dateObj.toLocaleDateString();
+  }
+
+   // Get pixel coordinates from map coordinates
+   cordsToPixels(cords: mapboxgl.LngLatLike): mapboxgl.Point {
+    return this.map.project(cords);
+  }
+
+  // calculate rotation angle between two points
+  calculateAngle(point1: mapboxgl.Point, point2: mapboxgl.Point): number {
+    const xDiff = point2.x - point1.x;
+    const yDiff = point2.y - point1.y;
+    return (Math.atan2(yDiff, xDiff) * 180) / Math.PI;
+  }
+
+  // calculate the distance between two points
+  calculateDistance(point1: mapboxgl.Point, point2: mapboxgl.Point): number {
+    const xDiff = point2.x - point1.x;
+    const yDiff = point2.y - point1.y;
+    return Math.sqrt(xDiff * xDiff + yDiff * yDiff);
   }
 }

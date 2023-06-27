@@ -116,9 +116,9 @@ export class MapComponent implements OnInit, OnDestroy {
       this.addPolygonLayer();
       this.addFlightPathLayer();
       //..............................................
-      const coordinate = [-86.3583874375729, 41.611132858179786] as mapboxgl.LngLatLike;
-      const point = this.map.project(coordinate);
-      console.log(point);
+      // const coordinate = [-86.3583874375729, 41.611132858179786] as mapboxgl.LngLatLike;
+      // const point = this.map.project(coordinate);
+      // console.log(point);
       //..............................................
     });
     // this.map.on('style.load', () => {
